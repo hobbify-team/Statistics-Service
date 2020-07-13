@@ -12,5 +12,5 @@ services:
             - ./.env/.production/.flask
             - ./.env/.production/.postgres
         ports:
-            - "80:80"
+            - "5000:5000"
         command: /start
