@@ -11,7 +11,7 @@ def countIntancesPending(username):
         FROM recurrences_recurrentinstance as r 
         inner join habits_habit as h on h.id = r.habit_id
         inner join users_user as u on u.id = h.owner_id
-        WHERE r.created = current_date and u.username = %s""",
+        WHERE r.created = (current_date-1)::DATE::TIMESTAMP WITH TIME ZONE and u.username = %s""",
 
     (username,)
     )
@@ -30,7 +30,7 @@ def countIntancesDone(username):
         FROM recurrences_recurrentinstance as r 
         inner join habits_habit as h on h.id = r.habit_id
         inner join users_user as u on u.id = h.owner_id
-        WHERE r.created = current_date and u.username = %s r.done = 'True'""",
+        WHERE r.created = (current_date-1)::DATE::TIMESTAMP WITH TIME ZONE and u.username = %s and r.done = 'True'""",
 
      (username,)
      )
@@ -49,7 +49,7 @@ def countIntancesDoneYesterday(username):
         FROM recurrences_recurrentinstance as r 
         inner join habits_habit as h on h.id = r.habit_id
         inner join users_user as u on u.id = h.owner_id
-        WHERE r.created = current_date-1 and u.username = %s r.done = 'True' """,
+        WHERE r.created = (current_date-1)::DATE::TIMESTAMP WITH TIME ZONE and u.username = %s r.done = 'True' """,
 
      (username,)
      )
