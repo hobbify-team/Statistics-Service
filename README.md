@@ -27,7 +27,7 @@ $ touch .postgres
 $ touch .flask
 ```
 
-The following variables must be added in the .postgres file.
+The following variables must be added in the .postgres file:
 
 ```sh
 POSTGRES_HOST=
@@ -36,6 +36,15 @@ POSTGRES_DB=
 POSTGRES_USER=
 POSTGRES_PASSWORD=
 ```
+and the .flask file:
+
+```
+#Flask
+FLASK_PORT=5000
+FLASK_HOST='0.0.0.0'
+```
+
+
 License
 ----
 
