@@ -64,7 +64,7 @@ def allScore(username):
     
      cur.execute(
 
-     """SELECT value,data
+     """SELECT value,date
         FROM score         
         WHERE owner_score = %s """,
 
