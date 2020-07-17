@@ -12,5 +12,19 @@ services:
             - ./.env/.production/.flask
             - ./.env/.production/.postgres
         ports:
+            - "8000:8000"
+
+        command: gunicorn -w 1 -b 0.0.0.0:8000 --chdir ./Hobbify-Stats wsgi:app
+       # command: /start
+
+    nginx:
+        container_name: nginx
+        restart: always
+        build: 
+            context: .
+            dockerfile: ./compose/production/nginx/Dockerfile
+        ports:
             - "80:80"
-        command: /start
+            - "443:443"
+        depends_on:
+            - app

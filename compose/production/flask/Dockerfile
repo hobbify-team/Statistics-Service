@@ -27,6 +27,8 @@ COPY ./compose/production/flask/start /start
 RUN sed -i 's/\r//' /start
 RUN chmod +x /start
 
+COPY . .
+
 WORKDIR /app
 
 ENTRYPOINT ["/entrypoint"]
