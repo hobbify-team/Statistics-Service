@@ -140,3 +140,4 @@ dmypy.json
 #SSL
 *.crt
 *.key
+/data

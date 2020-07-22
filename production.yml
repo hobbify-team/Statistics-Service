@@ -17,14 +17,37 @@ services:
         command: gunicorn -w 1 -b 0.0.0.0:8000 --chdir ./Hobbify-Stats wsgi:app
        # command: /start
 
+#    nginx:
+#        container_name: nginx
+#        restart: always
+#        build: 
+#            context: .
+#            dockerfile: ./compose/production/nginx/Dockerfile
+#        ports:
+#            - "80:80"
+#            - "443:443"
+#        volumes:
+#            - ./data/nginx:/etc/nginx/conf.d
+#            - ./data/certbot/conf:/etc/letsencrypt
+#            - ./data/certbot/www:/var/www/certbot
+#        depends_on:
+#            - app            
+#        command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     nginx:
-        container_name: nginx
-        restart: always
-        build: 
-            context: .
-            dockerfile: ./compose/production/nginx/Dockerfile
+        image: nginx:1.15-alpine
+        restart: unless-stopped
+        volumes:
+            - ./data/nginx:/etc/nginx/conf.d
+            - ./data/certbot/conf:/etc/letsencrypt
+            - ./data/certbot/www:/var/www/certbot
         ports:
             - "80:80"
             - "443:443"
-        depends_on:
-            - app
+        command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    certbot:
+        image: certbot/certbot
+        restart: unless-stopped
+        volumes:
+            - ./data/certbot/conf:/etc/letsencrypt
+            - ./data/certbot/www:/var/www/certbot
+        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
