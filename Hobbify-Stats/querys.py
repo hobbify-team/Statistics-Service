@@ -1,7 +1,8 @@
 import postgres
 
+
 """Count instances for today"""
-def countIntancesPending(username):
+def countIntancesPending(username,date):
     conn = postgres.conecct()
     cur = conn.cursor()
     
@@ -11,16 +12,16 @@ def countIntancesPending(username):
         FROM recurrences_recurrentinstance as r 
         inner join habits_habit as h on h.id = r.habit_id
         inner join users_user as u on u.id = h.owner_id
-        WHERE r.created = (current_date-1)::DATE::TIMESTAMP WITH TIME ZONE and u.username = %s""",
+        WHERE r.created = %s and u.username = %s """,
 
-    (username,)
+    (date,username,)
     )
     count = cur.fetchone()
     
     return count
 
 """Count instances done for today"""
-def countIntancesDone(username):
+def countIntancesDone(username,date):
      conn = postgres.conecct()
      cur = conn.cursor()
     
@@ -30,35 +31,35 @@ def countIntancesDone(username):
         FROM recurrences_recurrentinstance as r 
         inner join habits_habit as h on h.id = r.habit_id
         inner join users_user as u on u.id = h.owner_id
-        WHERE r.created = (current_date-1)::DATE::TIMESTAMP WITH TIME ZONE and u.username = %s and r.done = 'True'""",
+        WHERE r.created = %s and u.username = %s and r.done = 'True' """,
 
-     (username,)
+     (date,username,)
      )
      count = cur.fetchone()
     
      return count
 
-""" Count instances done for yesterday"""
-def countIntancesDoneYesterday(username):
-     conn = postgres.conecct()
-     cur = conn.cursor()
+# """ Count instances done for yesterday"""
+# def countIntancesDoneYesterday(username):
+#      conn = postgres.conecct()
+#      cur = conn.cursor()
     
-     cur.execute(
+#      cur.execute(
 
-     """SELECT COUNT(*) 
-        FROM recurrences_recurrentinstance as r 
-        inner join habits_habit as h on h.id = r.habit_id
-        inner join users_user as u on u.id = h.owner_id
-        WHERE r.created = (current_date-1)::DATE::TIMESTAMP WITH TIME ZONE and u.username = %s r.done = 'True' """,
+#      """SELECT COUNT(*) 
+#         FROM recurrences_recurrentinstance as r 
+#         inner join habits_habit as h on h.id = r.habit_id
+#         inner join users_user as u on u.id = h.owner_id
+#         WHERE r.created = (current_date-1)::DATE::TIMESTAMP WITH TIME ZONE and u.username = %s r.done = 'True' """,
 
-     (username,)
-     )
-     count = cur.fetchone()
+#      (username,)
+#      )
+#      count = cur.fetchone()
     
-     return count
+#      return count
 
 """ select all scores for a user"""
-def allScore(username):
+def allScore(username,date):
      conn = postgres.conecct()
      cur = conn.cursor()
     
@@ -66,11 +67,11 @@ def allScore(username):
 
      """SELECT value,date
         FROM score         
-        WHERE owner_score = %s """,
+        WHERE owner_score = %s  and date <= %s  """,
 
-     (username,)
+     (username,date,)
      )
-     count = cur.fetchone()
+     count = cur.fetchall()
     
      return count
 
