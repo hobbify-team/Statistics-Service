@@ -1,18 +1,24 @@
 from flask import Flask
 from flask import request
+from flask import jsonify
 import querys
 from datetime import date
+from markupsafe import escape
 import model
 
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/' , methods=['GET'] )   
 
-def hello_world():
-   # Connect to an existing database
-   #querys.insertScore(2,date(2002, 12, 31),'Yoiky')
+def req():
+
+   info = request.get_json()
+   username = info['username']
+   date = info['date']
    
-   
-   return 'hola'
+   proof = model.array_score(username, date)
+
+   return jsonify({'username' : username ,  'list_score': proof  })
+
 
