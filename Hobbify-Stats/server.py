@@ -7,6 +7,7 @@ from markupsafe import escape
 import model
 
 
+
 app = Flask(__name__)
 
 @app.route('/' , methods=['GET'] )   
@@ -17,8 +18,7 @@ def req():
    username = info['username']
    date = info['date']
    
-   proof = model.array_score(username, date)
+   info = model.array_score(username, date)
 
-   return jsonify({'username' : username ,  'list_score': proof  })
-
+   return jsonify({'username' : username ,  'list_score': info  })
 
