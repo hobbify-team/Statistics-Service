@@ -1,22 +1,24 @@
 from flask import Flask
 from flask import request
+from flask import jsonify
 import querys
 from datetime import date
 from markupsafe import escape
 import model
 
 
+
 app = Flask(__name__)
 
-@app.route('/heatmap/<username>')
-def heatmap(username):
-   # Connect to an existing database
-   #querys.insertScore(2,date(2002, 12, 31),'Yoiky')  
-   username = escape(username)
-   data = model.array_score(username)
-   # print(data)
-   return  {
-        "username": username,
-        "Data": data        
-    }
+@app.route('/' , methods=['GET'] )   
+
+def req():
+
+   info = request.get_json()
+   username = info['username']
+   date = info['date']
+   
+   info = model.array_score(username, date)
+
+   return jsonify({'username' : username ,  'list_score': info  })
 
