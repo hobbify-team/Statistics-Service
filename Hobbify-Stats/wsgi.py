@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+"""This script contains the codes to start the wsgi server"""
 from server import app
 
 if __name__ == "__main__":
